@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Клининг Сервис 24 — профессиональный клининг в Москве и МО</title>
+<meta name="description" content="Коммерческий и жилой клининг в Москве и области: офисы, клиники, производства, уборка после ремонта. от 60₽/м². Работаем по договору, выезд менеджера бесплатный.">
+<link rel="icon" href="assets/logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#0A3B35; --green-deep:#062A26; --green-soft:#1C5F54;
+  --gold:#C5A059; --gold-light:#E6C27A; --gold-dark:#8B6914;
+  --cream:#F6F1E7; --cream-2:#EFE7D8; --paper:#FBF8F1;
+  --ink:#12211E; --muted:#5C6B66;
+  --serif:'Playfair Display', Georgia, serif;
+  --sans:'Golos Text', system-ui, sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--gold);color:var(--green-deep)}
+
+/* ---------- grain overlay ---------- */
+.grain{position:fixed;inset:-50%;z-index:60;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");animation:grainShift 8s steps(6) infinite}
+@keyframes grainShift{0%{transform:translate(0,0)}20%{transform:translate(-2%,3%)}40%{transform:translate(3%,-2%)}60%{transform:translate(-3%,-3%)}80%{transform:translate(2%,2%)}100%{transform:translate(0,0)}}
+
+/* ---------- loader ---------- */
+.loader{position:fixed;inset:0;z-index:100;background:var(--green-deep);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem}
+.loader img{width:120px;filter:drop-shadow(0 0 24px rgba(197,160,89,.35))}
+.loader .count{font-family:var(--serif);font-size:clamp(3rem,8vw,6rem);color:var(--gold-light);letter-spacing:.05em}
+.loader .lbar{width:min(280px,60vw);height:1px;background:rgba(230,194,122,.2);position:relative;overflow:hidden}
+.loader .lbar i{position:absolute;inset:0;background:var(--gold);transform-origin:left;transform:scaleX(0)}
+.loader.done{pointer-events:none}
+
+/* ---------- custom cursor ---------- */
+.cursor{position:fixed;left:0;top:0;z-index:99;pointer-events:none;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;transform:translate(-50%,-50%);mix-blend-mode:difference;transition:width .3s,height .3s,background .3s;display:flex;align-items:center;justify-content:center}
+.cursor.big{width:72px;height:72px;background:rgba(197,160,89,.15)}
+.cursor span{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-light);opacity:0;transition:opacity .2s}
+.cursor.big span{opacity:1}
+@media (pointer:coarse){.cursor{display:none}}
+
+/* ---------- header ---------- */
+header{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:1.1rem clamp(1rem,4vw,3rem);transition:background .4s,box-shadow .4s,padding .4s}
+header.solid{background:rgba(246,241,231,.92);backdrop-filter:blur(12px);box-shadow:0 1px 0 rgba(10,59,53,.08);padding:.7rem clamp(1rem,4vw,3rem)}
+.brand{display:flex;align-items:center;gap:.8rem}
+.brand img{width:44px;border-radius:8px}
+.brand b{font-family:var(--serif);font-weight:600;font-size:1.05rem;color:var(--green);line-height:1.1}
+.brand small{display:block;color:var(--gold-dark);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase}
+nav{display:flex;gap:2rem;font-size:.85rem;letter-spacing:.04em}
+nav a{position:relative;color:var(--green);padding:.2rem 0}
+nav a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:right;transition:transform .35s cubic-bezier(.7,0,.2,1)}
+nav a:hover::after{transform:scaleX(1);transform-origin:left}
+.header-cta{display:inline-flex;align-items:center;gap:.6rem;background:var(--green);color:var(--gold-light);padding:.65rem 1.3rem;border-radius:999px;font-size:.85rem;border:1px solid var(--green);transition:background .3s,color .3s}
+.header-cta:hover{background:transparent;color:var(--green)}
+@media(max-width:980px){nav{display:none}}
+@media(max-width:640px){.header-cta{display:none}.brand small{letter-spacing:.12em;white-space:nowrap}}
+
+/* ---------- hero ---------- */
+.hero{min-height:100svh;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:2rem;padding:clamp(6rem,12vh,9rem) clamp(1rem,5vw,5rem) 4rem;position:relative;overflow:hidden}
+.hero-bg-word{position:absolute;right:-2%;top:14%;font-family:var(--serif);font-style:italic;font-size:clamp(8rem,22vw,20rem);line-height:1;color:transparent;-webkit-text-stroke:1px rgba(197,160,89,.22);pointer-events:none;user-select:none;white-space:nowrap;z-index:0}
+.hero>div:not(.hero-bg-word),.hero-media{position:relative;z-index:1}
+.badge{display:inline-flex;align-items:center;gap:.6rem;border:1px solid rgba(197,160,89,.5);color:var(--gold-dark);border-radius:999px;padding:.45rem 1rem;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:1.6rem;background:rgba(251,248,241,.6)}
+.badge i{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(197,160,89,.5)}50%{box-shadow:0 0 0 7px rgba(197,160,89,0)}}
+h1{font-family:var(--serif);font-weight:600;color:var(--green);font-size:clamp(2.4rem,5.6vw,4.6rem);line-height:1.08;letter-spacing:-.01em;margin-bottom:1.4rem}
+h1 em{font-style:italic;color:var(--gold-dark)}
+@media(max-width:980px){h1{padding-right:3.6rem}}
+.hero p.sub{font-size:clamp(1rem,1.4vw,1.15rem);color:var(--muted);max-width:34rem;line-height:1.65;margin-bottom:2.2rem}
+.cta-row{display:flex;flex-wrap:wrap;gap:1rem;align-items:center}
+.btn-gold{display:inline-flex;align-items:center;gap:.7rem;background:linear-gradient(120deg,var(--gold-dark),var(--gold) 35%,var(--gold-light) 60%,var(--gold));color:var(--green-deep);font-weight:600;padding:1rem 2rem;border-radius:999px;border:none;font-size:.95rem;cursor:pointer;box-shadow:0 10px 30px -10px rgba(197,160,89,.6);transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
+.btn-gold:hover{transform:translateY(-3px);box-shadow:0 18px 40px -12px rgba(197,160,89,.75)}
+.btn-ghost{display:inline-flex;align-items:center;gap:.7rem;color:var(--green);font-weight:500;padding:1rem 1.8rem;border-radius:999px;border:1px solid rgba(10,59,53,.25);font-size:.95rem;transition:border-color .3s,background .3s}
+.btn-ghost:hover{border-color:var(--gold);background:rgba(197,160,89,.08)}
+.hero-media{position:relative}
+.hero-frame{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:4/5;box-shadow:0 40px 80px -30px rgba(6,42,38,.45)}
+.hero-frame img{width:100%;height:115%;object-fit:cover;object-position:60% 30%;will-change:transform}
+.hero-card{position:absolute;left:-12%;bottom:8%;background:rgba(251,248,241,.9);backdrop-filter:blur(8px);border:1px solid rgba(197,160,89,.35);border-radius:16px;padding:1.1rem 1.4rem;display:flex;gap:1rem;align-items:center;box-shadow:0 24px 50px -20px rgba(6,42,38,.35)}
+.hero-card .disc{font-family:var(--serif);font-size:1.9rem;color:var(--gold-dark);line-height:1}
+.hero-card div p{font-size:.8rem;color:var(--muted);line-height:1.4}
+.hero-card div b{color:var(--green);font-size:.9rem;display:block}
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;color:var(--muted);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase}
+.scroll-hint i{width:1px;height:44px;background:linear-gradient(var(--gold),transparent);position:relative;overflow:hidden}
+.scroll-hint i::after{content:"";position:absolute;top:-100%;left:0;width:100%;height:100%;background:var(--green);animation:drop 1.8s ease-in-out infinite}
+@keyframes drop{0%{top:-100%}60%,100%{top:100%}}
+@media(max-width:980px){.hero{grid-template-columns:1fr;padding-top:7.5rem}.hero-media{order:-1;max-width:420px;margin-inline:auto}.hero-card{left:auto;right:6%;bottom:5%}.hero-bg-word{top:8%;font-size:clamp(6rem,30vw,10rem);opacity:.6}}
+
+/* ---------- ticker ---------- */
+.ticker{background:var(--green);color:var(--gold-light);padding:1.05rem 0;overflow:hidden;border-block:1px solid rgba(197,160,89,.25)}
+.ticker-track{display:flex;gap:3.5rem;width:max-content;animation:tick 30s linear infinite}
+.ticker-track span{font-family:var(--serif);font-style:italic;font-size:1.05rem;white-space:nowrap;display:flex;align-items:center;gap:3.5rem}
+.ticker-track span::after{content:"✦";font-style:normal;color:var(--gold);font-size:.8rem}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+/* ---------- sections common ---------- */
+section{padding:clamp(4.5rem,10vh,8rem) clamp(1rem,5vw,5rem)}
+.kicker{display:flex;align-items:center;gap:.8rem;color:var(--gold-dark);font-size:.75rem;letter-spacing:.22em;text-transform:uppercase;margin-bottom:1.2rem}
+.kicker::before{content:"";width:34px;height:1px;background:var(--gold)}
+h2{font-family:var(--serif);font-weight:600;color:var(--green);font-size:clamp(1.9rem,3.6vw,3.1rem);line-height:1.12;margin-bottom:1rem}
+p.lede{color:var(--muted);max-width:44rem;line-height:1.65;font-size:1.02rem}
+
+/* ---------- stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(10,59,53,.12);border:1px solid rgba(10,59,53,.12);border-radius:20px;overflow:hidden;margin-top:3rem}
+.stat{background:var(--paper);padding:2.2rem 1.6rem;text-align:center}
+.stat b{font-family:var(--serif);font-size:clamp(2.2rem,4vw,3.4rem);color:var(--green);display:block;line-height:1}
+.stat b sup{font-size:.45em;color:var(--gold-dark);vertical-align:super}
+.stat p{margin-top:.6rem;color:var(--muted);font-size:.85rem;letter-spacing:.04em}
+@media(max-width:820px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+/* ---------- services (dark green block) ---------- */
+.services{background:radial-gradient(120% 100% at 20% 0%,var(--green-soft) 0%,var(--green) 45%,var(--green-deep) 100%);color:var(--cream);border-radius:32px;margin-inline:clamp(.5rem,2vw,2rem);position:relative;overflow:hidden}
+.services h2{color:var(--cream)}
+.services p.lede{color:rgba(246,241,231,.7)}
+.services .kicker{color:var(--gold-light)}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:3rem}
+.svc{border:1px solid rgba(230,194,122,.22);border-radius:18px;padding:1.8rem;display:flex;flex-direction:column;gap:.9rem;background:rgba(246,241,231,.03);transition:background .4s,border-color .4s,transform .4s}
+.svc:hover{background:rgba(230,194,122,.07);border-color:rgba(230,194,122,.5);transform:translateY(-4px)}
+.svc .num{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:.95rem}
+.svc h3{font-family:var(--serif);font-weight:600;font-size:1.35rem;color:var(--gold-light);line-height:1.25}
+.svc p{font-size:.9rem;line-height:1.6;color:rgba(246,241,231,.75);flex:1}
+.svc .price-tag{align-self:flex-start;border:1px solid rgba(230,194,122,.4);border-radius:999px;padding:.4rem 1rem;font-size:.85rem;color:var(--gold-light);letter-spacing:.03em}
+.svc-img{border-radius:12px;overflow:hidden;aspect-ratio:16/9}
+.svc-img img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.svc:hover .svc-img img{transform:scale(1.06)}
+@media(max-width:1000px){.svc-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.svc-grid{grid-template-columns:1fr}}
+
+/* ---------- process pinned ---------- */
+.process{background:var(--cream-2)}
+.process-wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(2rem,6vw,6rem);align-items:start}
+.process-left{position:sticky;top:22vh}
+.step{background:var(--paper);border:1px solid rgba(10,59,53,.1);border-radius:22px;padding:clamp(1.6rem,3vw,2.6rem);margin-bottom:1.6rem;position:relative;overflow:hidden}
+.step::before{counter-reset:none}
+.step .step-num{font-family:var(--serif);font-size:clamp(3.4rem,7vw,5.5rem);line-height:1;color:transparent;-webkit-text-stroke:1px rgba(197,160,89,.55);position:absolute;right:1.2rem;top:.6rem}
+.step h3{font-family:var(--serif);color:var(--green);font-size:1.5rem;font-weight:600;margin-bottom:.8rem;max-width:75%}
+.step ul{list-style:none;display:flex;flex-direction:column;gap:.55rem}
+.step li{display:flex;gap:.7rem;align-items:flex-start;font-size:.95rem;color:var(--muted);line-height:1.5}
+.step li::before{content:"";flex:none;width:18px;height:18px;margin-top:2px;border-radius:50%;background:radial-gradient(circle at 35% 35%,var(--gold-light),var(--gold));position:relative}
+.step-progress{position:absolute;left:0;top:0;bottom:0;width:3px;background:rgba(10,59,53,.08)}
+.step-progress i{position:absolute;inset:0;background:linear-gradient(var(--gold),var(--gold-dark));transform:scaleY(0);transform-origin:top}
+@media(max-width:900px){.process-wrap{grid-template-columns:1fr}.process-left{position:static}}
+
+/* ---------- works horizontal ---------- */
+.works{background:var(--paper)}
+.works-head{display:flex;justify-content:space-between;align-items:end;gap:2rem;flex-wrap:wrap}
+.works-drag-hint{color:var(--gold-dark);font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:.6rem}
+.works-drag-hint svg{animation:nudge 2s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(8px)}}
+.works-viewport{overflow:hidden;margin-top:2.5rem;cursor:grab}
+.works-viewport.dragging{cursor:grabbing}
+.works-track{display:flex;gap:1.4rem;padding-bottom:1rem;will-change:transform}
+.work-card{flex:none;width:min(420px,78vw);border-radius:20px;overflow:hidden;position:relative;background:var(--green-deep)}
+.work-card img{width:100%;aspect-ratio:4/3;object-fit:cover;transition:transform .9s cubic-bezier(.2,.8,.2,1);will-change:transform}
+.work-card:hover img{transform:scale(1.05)}
+.work-meta{position:absolute;inset:auto 0 0 0;padding:1.4rem;background:linear-gradient(transparent,rgba(6,42,38,.88));color:var(--cream);display:flex;flex-direction:column;gap:.3rem}
+.work-meta b{font-family:var(--serif);font-weight:600;font-size:1.15rem;color:var(--gold-light)}
+.work-meta span{font-size:.82rem;color:rgba(246,241,231,.75)}
+.work-tag{position:absolute;top:1rem;left:1rem;background:var(--gold);color:var(--green-deep);font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:.35rem .8rem;border-radius:999px}
+
+/* ---------- pricing ---------- */
+.pricing{background:var(--cream)}
+.price-groups{margin-top:3rem;display:flex;flex-direction:column;gap:3.2rem}
+.pg-title{font-family:var(--serif);color:var(--green);font-size:1.5rem;font-weight:600;display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem}
+.pg-title::after{content:"";flex:1;height:1px;background:rgba(197,160,89,.4)}
+.price-list{border:1px solid rgba(10,59,53,.12);border-radius:18px;overflow:hidden;background:var(--paper)}
+.prow{border-bottom:1px solid rgba(10,59,53,.08)}
+.prow:last-child{border-bottom:none}
+.ptoggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;padding:1.15rem clamp(1rem,2.5vw,1.8rem);background:none;border:none;font-family:var(--sans);font-size:1rem;color:var(--ink);cursor:pointer;text-align:left;transition:background .3s}
+.ptoggle:hover{background:rgba(197,160,89,.07)}
+.ptoggle .pname{font-weight:500;flex:1}
+.ptoggle .pprice{font-family:var(--serif);color:var(--green);font-size:1.05rem;white-space:nowrap;font-weight:600}
+.ptoggle .chev{flex:none;width:26px;height:26px;border-radius:50%;border:1px solid rgba(197,160,89,.5);display:grid;place-items:center;color:var(--gold-dark);transition:transform .4s,background .3s}
+.prow.open .chev{transform:rotate(45deg);background:var(--gold);color:var(--green-deep)}
+.ppanel{overflow:hidden;height:0}
+.ppanel-inner{padding:0 clamp(1rem,2.5vw,1.8rem) 1.3rem;color:var(--muted);font-size:.92rem;line-height:1.6}
+.ppanel-inner ul{list-style:none;columns:2;gap:2.5rem;margin-top:.6rem}
+.ppanel-inner li{padding-left:1.2rem;position:relative;margin-bottom:.4rem;break-inside:avoid}
+.ppanel-inner li::before{content:"—";position:absolute;left:0;color:var(--gold-dark)}
+@media(max-width:700px){.ppanel-inner ul{columns:1}}
+.pricing-note{margin-top:2rem;display:flex;gap:1rem;align-items:center;background:rgba(197,160,89,.1);border:1px dashed rgba(197,160,89,.5);border-radius:14px;padding:1rem 1.4rem;color:var(--green);font-size:.92rem}
+
+/* ---------- reviews ---------- */
+.reviews{background:var(--green-deep);color:var(--cream);border-radius:32px;margin-inline:clamp(.5rem,2vw,2rem)}
+.reviews h2{color:var(--cream)}
+.reviews .kicker{color:var(--gold-light)}
+.rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem;margin-top:3rem}
+.rev{border:1px solid rgba(230,194,122,.2);border-radius:18px;padding:1.8rem;background:rgba(246,241,231,.04);display:flex;flex-direction:column;gap:1.1rem;transition:transform .4s,border-color .4s}
+.rev:hover{transform:translateY(-5px);border-color:rgba(230,194,122,.5)}
+.rev .stars{color:var(--gold-light);letter-spacing:.25em;font-size:.85rem}
+.rev p{font-size:.93rem;line-height:1.65;color:rgba(246,241,231,.82);flex:1}
+.rev b{font-family:var(--serif);color:var(--gold-light);font-weight:600;font-size:1rem}
+@media(max-width:900px){.rev-grid{grid-template-columns:1fr}}
+
+/* ---------- faq ---------- */
+.faq{background:var(--cream-2)}
+.faq-list{max-width:56rem;margin:2.5rem auto 0}
+.q{border-bottom:1px solid rgba(10,59,53,.15)}
+.q button{width:100%;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;padding:1.3rem .2rem;background:none;border:none;cursor:pointer;font-family:var(--sans);font-size:1.05rem;font-weight:500;color:var(--green);text-align:left}
+.q .a{overflow:hidden;height:0}
+.q .a p{padding:0 .2rem 1.3rem;color:var(--muted);line-height:1.65;font-size:.95rem;max-width:46rem}
+.q .plus{flex:none;font-family:var(--serif);font-size:1.5rem;color:var(--gold-dark);transition:transform .4s}
+.q.open .plus{transform:rotate(45deg)}
+
+/* ---------- final CTA dark ---------- */
+.final{background:radial-gradient(90% 130% at 80% 10%,var(--green-soft) 0%,var(--green) 50%,var(--green-deep) 100%);color:var(--cream);text-align:center;border-radius:32px;margin-inline:clamp(.5rem,2vw,2rem);position:relative;overflow:hidden}
+.final .logo-big{width:130px;margin:0 auto 2rem;filter:drop-shadow(0 0 30px rgba(197,160,89,.35))}
+.final h2{color:var(--cream);max-width:44rem;margin:0 auto 1rem}
+.final p{color:rgba(246,241,231,.75);max-width:36rem;margin:0 auto 2.4rem;line-height:1.6}
+.final .ornament{font-family:var(--serif);color:var(--gold);font-size:1.4rem;letter-spacing:1.2em;margin-bottom:1.2rem}
+
+/* ---------- footer ---------- */
+footer{background:var(--green-deep);color:rgba(246,241,231,.75);padding:clamp(3rem,7vh,5rem) clamp(1rem,5vw,5rem) 2rem}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:2.5rem}
+footer h4{font-family:var(--serif);color:var(--gold-light);font-size:1.05rem;font-weight:600;margin-bottom:1rem}
+footer a:hover{color:var(--gold-light)}
+footer ul{list-style:none;display:flex;flex-direction:column;gap:.55rem;font-size:.9rem}
+footer p{font-size:.9rem;line-height:1.6}
+.foot-bottom{margin-top:3rem;padding-top:1.5rem;border-top:1px solid rgba(230,194,122,.15);display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-size:.8rem;color:rgba(246,241,231,.45)}
+@media(max-width:900px){.foot-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.foot-grid{grid-template-columns:1fr}}
+
+/* ---------- sticky call FAB ---------- */
+.fab{position:fixed;right:1.4rem;bottom:1.4rem;z-index:70;display:flex;flex-direction:column-reverse;align-items:flex-end;gap:.7rem}
+.fab-btn{width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--green-deep);border:none;display:grid;place-items:center;cursor:pointer;box-shadow:0 14px 34px -8px rgba(197,160,89,.7);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.fab-btn:hover{transform:scale(1.08)}
+.fab-btn svg{width:26px;height:26px}
+.fab-btn::after{content:"";position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--gold);animation:ring 2.2s ease-out infinite}
+@keyframes ring{0%{transform:scale(1);opacity:.9}100%{transform:scale(1.55);opacity:0}}
+.fab-menu{display:flex;flex-direction:column;gap:.55rem;opacity:0;transform:translateY(14px) scale(.95);pointer-events:none;transition:opacity .3s,transform .35s cubic-bezier(.2,.8,.2,1)}
+.fab.open .fab-menu{opacity:1;transform:none;pointer-events:auto}
+.fab-item{display:flex;align-items:center;gap:.8rem;background:var(--paper);border:1px solid rgba(197,160,89,.4);color:var(--green);border-radius:999px;padding:.6rem 1.1rem;font-size:.88rem;font-weight:500;box-shadow:0 12px 28px -12px rgba(6,42,38,.4);white-space:nowrap;transition:background .25s,transform .25s}
+.fab-item:hover{background:var(--gold-light);transform:translateX(-4px)}
+.fab-item i{width:20px;height:20px;display:grid;place-items:center;color:var(--gold-dark);font-style:normal}
+
+/* motion foundation */
+html.has-motion [data-motion-text],
+html.has-motion [data-reveal],
+html.has-motion [data-reveal-item],
+html.has-motion [data-image-reveal]{visibility:hidden}
+.motion-line-mask,.motion-word-mask{display:inline-block;overflow:hidden;vertical-align:top}
+.motion-line,.motion-word{display:inline-block;will-change:transform,opacity,filter}
+[data-image-reveal]{overflow:hidden}
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- LOADER -->
+<div class="loader" id="loader">
+  <img src="assets/logo.jpg" alt="Логотип Клининг Сервис 24">
+  <div class="count"><span id="loadCount">0</span>%</div>
+  <div class="lbar"><i id="loadBar"></i></div>
+</div>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"><span>смотреть</span></div>
+
+<!-- HEADER -->
+<header id="hdr">
+  <a class="brand" href="#top">
+    <img src="assets/logo.jpg" alt="Клининг Сервис 24">
+    <b>Клининг Сервис<small>24 · Москва и МО</small></b>
+  </a>
+  <nav>
+    <a href="#services">Услуги</a>
+    <a href="#process">Как работаем</a>
+    <a href="#works">Работы</a>
+    <a href="#pricing">Цены</a>
+    <a href="#faq">Вопросы</a>
+  </nav>
+  <a class="header-cta" href="tel:+74950151055">+7 (495) 015-10-55</a>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-bg-word" data-parallax aria-hidden="true">Чистота</div>
+  <div>
+    <span class="badge"><i></i>Скидка −25% новым клиентам</span>
+    <h1 data-motion-text="lines">Профессиональный клининг для бизнеса и дома. Безупречно. Круглосуточно.</h1>
+    <p class="sub" data-reveal="fade-up">Обслуживаем производства, клиники, офисы и частные объекты в Москве и Московской области. Работаем по договору — со своей химией, оборудованием и обученной бригадой.</p>
+    <div class="cta-row" data-reveal-group>
+      <a class="btn-gold" href="tel:+74950151055" data-reveal="fade-up" data-reveal-item data-magnetic>Заказать бесплатный замер объекта</a>
+      <a class="btn-ghost" href="#pricing" data-reveal="fade-up" data-reveal-item>Смотреть цены ↓</a>
+    </div>
+  </div>
+  <figure class="hero-media" data-reveal="fade-up">
+    <div class="hero-frame" data-image-reveal>
+      <img data-parallax-image src="assets/hero-office.webp" alt="Уборка офиса в Москве клинерами компании">
+    </div>
+    <div class="hero-card">
+      <div class="disc">−25%</div>
+      <div><b>для новых клиентов</b><p>Выезд менеджера на оценку — бесплатно<br>и ни к чему не обязывает</p></div>
+    </div>
+  </figure>
+  <div class="scroll-hint"><span>листайте</span><i></i></div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>Офисы и бизнес-центры</span><span>Медицинские клиники</span><span>Промышленные предприятия</span><span>Уборка после ремонта</span><span>Рестораны и ТЦ</span><span>Коттеджи и таунхаусы</span><span>Мойка окон и фасадов</span><span>Химчистка мебели</span>
+    <span>Офисы и бизнес-центры</span><span>Медицинские клиники</span><span>Промышленные предприятия</span><span>Уборка после ремонта</span><span>Рестораны и ТЦ</span><span>Коттеджи и таунхаусы</span><span>Мойка окон и фасадов</span><span>Химчистка мебели</span>
+  </div>
+</div>
+
+<!-- STATS -->
+<section style="padding-block:clamp(3.5rem,8vh,6rem)">
+  <div class="kicker" data-reveal="fade-up">Клининг Сервис 24 в цифрах</div>
+  <h2 data-motion-text="words">Десять лет безупречного сервиса — от цеха до палаты.</h2>
+  <div class="stats" data-reveal-group>
+    <div class="stat" data-reveal="fade-up" data-reveal-item><b><span class="cnt" data-count="10">0</span></b><p>лет опыта</p></div>
+    <div class="stat" data-reveal="fade-up" data-reveal-item><b><span class="cnt" data-count="3000">0</span><sup>+</sup></b><p>выполненных заказов</p></div>
+    <div class="stat" data-reveal="fade-up" data-reveal-item><b><span class="cnt" data-count="95">0</span><sup>%</sup></b><p>повторных обращений</p></div>
+    <div class="stat" data-reveal="fade-up" data-reveal-item><b><span class="cnt" data-count="100">0</span><sup>%</sup></b><p>гарантия результата</p></div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="kicker" data-reveal="fade-up">Что мы убираем</div>
+  <h2 data-motion-text="lines">Три направления большого клининга</h2>
+  <p class="lede" data-reveal="fade-up">Мы верим, что именно внимание к мелочам делает нашу работу особенной. Каждый объект — возможность подтвердить репутацию.</p>
+  <div class="svc-grid" data-reveal-group>
+    <article class="svc" data-reveal="fade-up" data-reveal-item>
+      <span class="num">01</span>
+      <div class="svc-img"><img src="assets/work-radiator.webp" alt="Очистка напольных радиаторов на производстве" loading="lazy"></div>
+      <h3>Промышленные предприятия</h3>
+      <p>Уборка цехов, складов и производственных площадок с соблюдением норм безопасности — от обеспыливания до мойки полов роторной машиной.</p>
+      <span class="price-tag">от 60 ₽/м²</span>
+    </article>
+    <article class="svc" data-reveal="fade-up" data-reveal-item>
+      <span class="num">02</span>
+      <div class="svc-img"><img src="assets/work-polyclinic.webp" alt="Генеральная уборка процедурного кабинета поликлиники" loading="lazy"></div>
+      <h3>Медицинские клиники</h3>
+      <p>Сертифицированные средства, дезинфекция по протоколу, контроль каждого цикла обработки — безопасная среда для пациентов и персонала.</p>
+      <span class="price-tag">от 110 ₽/м²</span>
+    </article>
+    <article class="svc" data-reveal="fade-up" data-reveal-item>
+      <span class="num">03</span>
+      <div class="svc-img"><img src="assets/work-office.webp" alt="Генеральная уборка офиса" loading="lazy"></div>
+      <h3>Коммерческие помещения</h3>
+      <p>Офисы, торговые центры, рестораны и фитнес: регулярное обслуживание по договору или разовая генеральная уборка под ключ.</p>
+      <span class="price-tag">от 60 ₽/м²</span>
+    </article>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="process-wrap">
+    <div class="process-left">
+      <div class="kicker" data-reveal="fade-up">Наш процесс</div>
+      <h2 data-motion-text="lines">Как мы работаем</h2>
+      <p class="lede" data-reveal="fade-up">От первого звонка до акта выполненных работ — прозрачный путь из трёх шагов. Менеджер выезжает на объект бесплатно.</p>
+    </div>
+    <div class="process-right">
+      <article class="step" data-step>
+        <div class="step-progress"><i></i></div>
+        <span class="step-num">01</span>
+        <h3>Формируем предложение</h3>
+        <ul>
+          <li>Анализируем ваши потребности и специфику объекта</li>
+          <li>Составляем индивидуальный план уборки</li>
+          <li>Рассчитываем точную стоимость за м²</li>
+        </ul>
+      </article>
+      <article class="step" data-step>
+        <div class="step-progress"><i></i></div>
+        <span class="step-num">02</span>
+        <h3>Связываемся и заключаем сделку</h3>
+        <ul>
+          <li>Консультируем по всем форматам услуг</li>
+          <li>Менеджер выезжает на объект по потребности</li>
+          <li>Работаем строго по договору — с физ. и юр. лицами</li>
+        </ul>
+      </article>
+      <article class="step" data-step>
+        <div class="step-progress"><i></i></div>
+        <span class="step-num">03</span>
+        <h3>Команда приступает к работе</h3>
+        <ul>
+          <li>Профессиональные специалисты со стажем</li>
+          <li>Привозим своё оборудование и химию</li>
+          <li>Гарантируем результат — 100% по договору</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- WORKS -->
+<section class="works" id="works">
+  <div class="works-head">
+    <div>
+      <div class="kicker" data-reveal="fade-up">Портфолио</div>
+      <h2 data-motion-text="lines">Реальные работы нашей бригады</h2>
+    </div>
+    <div class="works-drag-hint" data-reveal="fade-up">тяните вбок
+      <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><path d="M1 6h22M19 1l5 5-5 5" stroke="currentColor" stroke-width="1.4"/></svg>
+    </div>
+  </div>
+  <div class="works-viewport" id="worksViewport">
+    <div class="works-track" id="worksTrack">
+      <a class="work-card" href="https://клинингсервис-24.рф/nashi-raboty/" target="_blank" rel="noopener">
+        <span class="work-tag">Офис · Москва</span>
+        <img src="assets/work-office.webp" alt="Обеспыливание стеллажей и мойка полов при генеральной уборке офиса" loading="lazy">
+        <div class="work-meta"><b>Генеральная уборка офисов</b><span>Обеспыливание стеллажей, техники и жалюзи · мойка полов профессиональным пылесосом</span></div>
+      </a>
+      <a class="work-card" href="https://клинингсервис-24.рф/nashi-raboty/" target="_blank" rel="noopener">
+        <span class="work-tag">Производство</span>
+        <img src="assets/work-radiator.webp" alt="Вакуумная чистка внутрипольного конвектора" loading="lazy">
+        <div class="work-meta"><b>Очистка напольных радиаторов</b><span>Вакуумная чистка канала внутрипольного конвектора, теплообменников и вентиляторов</span></div>
+      </a>
+      <a class="work-card" href="https://клинингсервис-24.рф/nashi-raboty/" target="_blank" rel="noopener">
+        <span class="work-tag">Медицина</span>
+        <img src="assets/work-polyclinic.webp" alt="Генеральная уборка процедурного кабинета поликлиники" loading="lazy">
+        <div class="work-meta"><b>Поликлиника: уборка и дезинфекция</b><span>Процедурный кабинет — вымывание и дезинфекция всех поверхностей по протоколу</span></div>
+      </a>
+      <a class="work-card" href="https://клинингсервис-24.рф/nashi-raboty/" target="_blank" rel="noopener">
+        <span class="work-tag">Фасад · БЦ</span>
+        <img src="assets/work-showcase.webp" alt="Мойка внешних витрин бизнес-центра" loading="lazy">
+        <div class="work-meta"><b>Мойка витрин бизнес-центра</b><span>Витрины, входные группы и светопрозрачные панели — идеальная прозрачность для бизнеса</span></div>
+      </a>
+      <a class="work-card" href="https://клинингсервис-24.рф/nashi-raboty/" target="_blank" rel="noopener">
+        <span class="work-tag">Загородный дом</span>
+        <img src="assets/work-townhouse.webp" alt="Уборка таунхауса и мойка окон" loading="lazy">
+        <div class="work-meta"><b>Уборка таунхауса + мойка окон</b><span>Комплексная чистка от подвала до крыши, панорамное остекление второго света</span></div>
+      </a>
+      <a class="work-card" href="https://клинингсервис-24.рф/nashi-raboty/" target="_blank" rel="noopener">
+        <span class="work-tag">Полы · Ротор</span>
+        <img src="assets/work-rotor.webp" alt="Чистка полов роторной машиной в офисе" loading="lazy">
+        <div class="work-meta"><b>Чистка полов роторной машиной</b><span>Восстановление блеска каменных и полимерных покрытий в офисном пространстве</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="kicker" data-reveal="fade-up">Прозрачный прайс</div>
+  <h2 data-motion-text="lines">Цены на услуги уборки</h2>
+  <p class="lede" data-reveal="fade-up">Итоговая стоимость зависит от площади, запущенности и графика. Точную цену менеджер назовёт после бесплатного выезда на объект.</p>
+
+  <div class="price-groups" id="priceGroups"></div>
+
+  <div class="pricing-note" data-reveal="fade-up">
+    <span style="font-size:1.4rem">✦</span>
+    Для новых клиентов — скидка <b style="color:var(--gold-dark)">−25%</b>. Срочные объекты: выезд бригады в течение 2 часов, работаем 24/7, включая ночи и выходные.
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews">
+  <div class="kicker" data-reveal="fade-up">Отзывы</div>
+  <h2 data-motion-text="lines">Что говорят клиенты</h2>
+  <div class="rev-grid" data-reveal-group>
+    <article class="rev" data-reveal="fade-up" data-reveal-item>
+      <div class="stars">★★★★★</div>
+      <p>«Замечательные девчонки-золушки)) Убрали быстро, качественно, цены приемлемые. Химия не вонючая — огромный плюс, с детьми пришли: чистота, порядок, запах чистоты. Очень советую, теперь они со мной навсегда.»</p>
+      <b>Юлиана</b>
+    </article>
+    <article class="rev" data-reveal="fade-up" data-reveal-item>
+      <div class="stars">★★★★★</div>
+      <p>«Хочу поблагодарить весь персонал за прекрасную работу и профессиональный подход! Хороший, человеческий подход к клиентам. Отличное качество работ. Претензий нет. Рекомендую!»</p>
+      <b>Николай</b>
+    </article>
+    <article class="rev" data-reveal="fade-up" data-reveal-item>
+      <div class="stars">★★★★★</div>
+      <p>«Вызывал сотрудников клининга на квартиру. Уборку провели быстро и по адекватной цене за работу. Обязательно обращусь ещё!»</p>
+      <b>Михаил</b>
+    </article>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div style="text-align:center">
+    <div class="kicker" style="justify-content:center" data-reveal="fade-up">Вопросы и ответы</div>
+    <h2 data-motion-text="lines">Часто задаваемые вопросы</h2>
+  </div>
+  <div class="faq-list" id="faqList"></div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final">
+  <img class="logo-big" src="assets/logo.jpg" alt="Клининг Сервис 24" data-reveal="zoom">
+  <div class="ornament" data-reveal="fade-up">✦ ✦ ✦</div>
+  <h2 data-motion-text="lines">Станьте нашим партнёром и экономьте на уборке</h2>
+  <p data-reveal="fade-up">Сертификация сотрудников, профессиональное оборудование, гибкая система тарифов и уборка на постоянной основе. Оставьте заботу о чистоте нам — занимайтесь важным.</p>
+  <div class="cta-row" style="justify-content:center" data-reveal-group>
+    <a class="btn-gold" href="tel:+74950151055" data-reveal="fade-up" data-reveal-item data-magnetic>+7 (495) 015-10-55 — позвонить</a>
+    <a class="btn-ghost" style="color:var(--gold-light);border-color:rgba(230,194,122,.4)" href="https://wa.me/+79254021684" target="_blank" rel="noopener" data-reveal="fade-up" data-reveal-item>WhatsApp</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-grid">
+    <div>
+      <a class="brand" href="#top" style="margin-bottom:1rem">
+        <img src="assets/logo.jpg" alt="" style="width:52px;border-radius:8px">
+        <b style="color:var(--gold-light)">Клининг Сервис<small style="color:rgba(246,241,231,.6)">24 · Москва и МО</small></b>
+      </a>
+      <p style="margin-top:1rem">ООО «Клининг сервис 24». Профессиональный коммерческий клининг для бизнеса. Гарантируем ответственность за каждого члена команды.</p>
+    </div>
+    <div>
+      <h4>Навигация</h4>
+      <ul>
+        <li><a href="#services">Услуги</a></li>
+        <li><a href="#process">Как работаем</a></li>
+        <li><a href="#works">Наши работы</a></li>
+        <li><a href="#pricing">Цены</a></li>
+        <li><a href="#faq">Вопросы</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Офисы</h4>
+      <ul>
+        <li>Центральный: Москва,<br>Можайское ш., д. 29</li>
+        <li>Филиал: Москва,<br>ул. Большая Ордынка, 19, стр. 1</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Связь</h4>
+      <ul>
+        <li><a href="tel:+74950151055">+7 (495) 015-10-55</a></li>
+        <li><a href="tel:+79254021582">+7 (925) 402-15-82</a></li>
+        <li><a href="mailto:OOO-cleaning-service@ya.ru">OOO-cleaning-service@ya.ru</a></li>
+        <li><a href="https://t.me/OOO_KS_24" target="_blank" rel="noopener">Telegram</a></li>
+        <li><a href="https://vk.com/club228349600" target="_blank" rel="noopener">ВКонтакте</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 ООО «Клининг сервис 24»</span>
+    <span>Работаем 24/7 · Выезд на срочные объекты в течение 2 часов</span>
+  </div>
+</footer>
+
+<!-- STICKY CALL FAB -->
+<div class="fab" id="fab">
+  <button class="fab-btn" id="fabBtn" aria-label="Связаться с нами" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.13.96.36 1.9.7 2.8a2 2 0 0 1-.45 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.45c.9.34 1.84.57 2.8.7A2 2 0 0 1 22 16.9Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <div class="fab-menu">
+    <a class="fab-item" href="tel:+74950151055"><i>☎</i>+7 (495) 015-10-55</a>
+    <a class="fab-item" href="https://wa.me/+79254021684" target="_blank" rel="noopener"><i>✆</i>WhatsApp</a>
+    <a class="fab-item" href="https://t.me/OOO_KS_24" target="_blank" rel="noopener"><i>➤</i>Telegram</a>
+    <a class="fab-item" href="https://max.ru/u/f9LHodD0cOITKIVz2OpCUbaGE-Mkrn1Bf5sYU42a-iycjVMgEnfOpxoyPMg" target="_blank" rel="noopener"><i>✉</i>MAX</a>
+    <a class="fab-item" href="https://vk.com/club228349600" target="_blank" rel="noopener"><i>V</i>ВКонтакте</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="price-data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
